@@ -1,15 +1,37 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { genSaltSync, hashSync } from "bcrypt";
+import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
-export type UserDocument = User & Document;
-
-@Schema()
+@Entity()
 export class User {
+    @PrimaryGeneratedColumn()
+    id: number;
 
-    @Prop({ required: true })
+    @Column({ default: true, nullable: false })
+    enabled: boolean;
+
+    @Column({ default: false })
+    isDeleted: boolean;
+
+    @Column({ nullable: true, unique: true })
     email: string;
 
-    @Prop({ required: true })
+    @Column({ nullable: true })
     password: string;
-}
 
-export const UserSchema = SchemaFactory.createForClass(User);
+    @Column({ nullable: true })
+    createdBy: number;
+
+    @CreateDateColumn()
+    createdTimestamp: string;
+
+    @Column({ nullable: true })
+    updatedBy: number;
+
+    @UpdateDateColumn()
+    updatedTimestamp: string;
+
+    @BeforeInsert()
+    async hashPassword() {
+        this.password = await hashSync(this.password, genSaltSync(10));
+    }
+}
