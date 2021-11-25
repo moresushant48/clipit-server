@@ -30,8 +30,4 @@ export class User {
     @UpdateDateColumn()
     updatedTimestamp: string;
 
-    @BeforeInsert()
-    async hashPassword() {
-        this.password = await hashSync(this.password, genSaltSync(10));
-    }
 }

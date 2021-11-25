@@ -4,6 +4,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ConfigModule, ConfigService } from 'nestjs-config';
+import { CommonModule } from './common/common.module';
 import * as path from 'path';
 
 const ENV = process.env.NODE_ENV;
@@ -17,7 +18,8 @@ const ENV = process.env.NODE_ENV;
       useFactory: (config: ConfigService) => config.get('database'),
       inject: [ConfigService],
     }),
-    UsersModule],
+    UsersModule,
+    CommonModule],
   controllers: [AppController],
   providers: [AppService],
 })
