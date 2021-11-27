@@ -5,7 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { User } from './entities/user.entity';
 import { CommonService } from 'src/common/common.service';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Crud({
   model: {
@@ -18,24 +18,33 @@ export class UsersController implements CrudController<User> {
   }
 
   @Post('add')
-  async addUser(@Req() req, @Res() res: Response): Promise<any> {
+  async addUser(@Req() req: Request, @Res() res: Response): Promise<any> {
     try {
       const data = await this.service.addUser(req.body);
 
       return res.status(HttpStatus.OK).json(data);
     } catch (error) {
-
+      console.warn("Users -> add : ", error);
     }
   }
 
   @Post('verify')
-  async verifyUser(@Req() req, @Res() res: Response): Promise<any> {
+  async verifyUser(@Req() req: Request, @Res() res: Response): Promise<any> {
     try {
-      const data = await this.service.addUser(req.body);
-
+      const data = await this.service.verifyUser(req.body);
       return res.status(HttpStatus.OK).json(data);
     } catch (error) {
+      console.warn("Users -> Verify : ", error);
+    }
+  }
 
+  @Get('me')
+  async me(@Req() req: Request, @Res() res: Response): Promise<any> {
+    try {
+      const data = await this.service.me(req.user);
+      return res.status(HttpStatus.OK).json(data);
+    } catch (error) {
+      console.warn("Users -> me : ", error);
     }
   }
 
