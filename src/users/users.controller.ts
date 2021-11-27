@@ -6,6 +6,7 @@ import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { User } from './entities/user.entity';
 import { CommonService } from 'src/common/common.service';
 import { Request, Response } from 'express';
+import { Public } from 'src/decorator/public.decorator';
 
 @Crud({
   model: {
@@ -17,6 +18,7 @@ export class UsersController implements CrudController<User> {
   constructor(public service: UsersService, private readonly commonService: CommonService) {
   }
 
+  @Public()
   @Post('add')
   async addUser(@Req() req: Request, @Res() res: Response): Promise<any> {
     try {
@@ -28,6 +30,7 @@ export class UsersController implements CrudController<User> {
     }
   }
 
+  @Public()
   @Post('verify')
   async verifyUser(@Req() req: Request, @Res() res: Response): Promise<any> {
     try {
