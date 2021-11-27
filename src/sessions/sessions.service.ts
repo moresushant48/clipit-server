@@ -16,14 +16,16 @@ export class SessionsService extends TypeOrmCrudService<Session> {
     super(sessionRepository);
   }
 
-  async generateSessionId(): Promise<any> {
-    const response = { sessionId: null, flash: false, message: 'Invalid request.', responseCode: 400 };
+  async generateSessionId(decodedUser: any): Promise<any> {
+    const response = { session: null, flash: false, message: 'Invalid request.', responseCode: 400 };
     try {
       var newSession = new Session()
       newSession.sessionId = uuidv4();
-      const data = this.repo.save(newSession);
+      print
+      newSession.userID = decodedUser.id;
+      const data = await this.repo.save(newSession);
       if (data) {
-        response.sessionId = newSession.sessionId;
+        response.session = data;
         response.flash = true;
         response.message = 'New Session Created';
         response.responseCode = 200;

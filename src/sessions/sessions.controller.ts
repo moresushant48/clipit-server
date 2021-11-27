@@ -20,7 +20,7 @@ export class SessionsController implements CrudController<Session> {
   @Get('create')
   async createSession(@Req() req: Request, @Res() res: Response) {
     try {
-      const data = await this.service.generateSessionId();
+      const data = await this.service.generateSessionId(req.body);
       return res.status(HttpStatus.OK).json(data);
     } catch (error) {
       console.warn("Sessions -> create : ", error);
