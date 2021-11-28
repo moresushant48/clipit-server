@@ -50,11 +50,14 @@ export class UsersService extends TypeOrmCrudService<User> {
         response.responseCode = 200;
         return response;
       } else {
+        response.message = "Couldn't Verify";
+        response.responseCode = 401;
         return response;
       }
 
     } catch (error) {
       response.message = "Failed to check.";
+      response.responseCode = 400;
       return response;
     }
     return response;

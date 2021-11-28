@@ -21,8 +21,7 @@ export class SessionsService extends TypeOrmCrudService<Session> {
     try {
       var newSession = new Session()
       newSession.sessionId = uuidv4();
-      print
-      newSession.userID = decodedUser.id;
+      // newSession.userID = decodedUser.id;
       const data = await this.repo.save(newSession);
       if (data) {
         response.session = data;

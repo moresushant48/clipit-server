@@ -18,9 +18,9 @@ export class SessionsController implements CrudController<Session> {
 
   @Public()
   @Get('create')
-  async createSession(@Req() req: Request, @Res() res: Response) {
+  async createSession(@Req() req: Request, @Res() res: Response): Promise<any> {
     try {
-      const data = await this.service.generateSessionId(req.body);
+      const data = await this.service.generateSessionId(req.user);
       return res.status(HttpStatus.OK).json(data);
     } catch (error) {
       console.warn("Sessions -> create : ", error);

@@ -14,7 +14,7 @@ export class Session {
     @Column({ nullable: false, unique: true })
     sessionId: string;
 
-    @Column({ nullable: true, unique: true })
+    @Column({ nullable: true })
     userID: string;
 
     @Column({ nullable: true })
