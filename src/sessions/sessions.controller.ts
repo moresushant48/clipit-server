@@ -28,11 +28,23 @@ export class SessionsController implements CrudController<Session> {
     }
   }
 
+  // @Public()
+  @Post('user')
+  async setSessionUser(@Req() req: Request, @Res() res: Response): Promise<any> {
+    try {
+      const data = await this.service.setSessionUser(req.user, req.body);
+      return res.status(HttpStatus.OK).json(data);
+    } catch (error) {
+      console.warn("Sessions -> setSessionUser : ", error);
+    }
+  }
+
   @Public()
-  @Sse('sse')
-  sse(): Observable<MessageEvent> {
+  @Sse(':sessionId')
+  async sseSession(@Param('sessionId') sessionId: string): Promise<Observable<MessageEvent>> {
+    const data = await this.service.watchSessionId(sessionId);
     return interval(1000).pipe(
-      map((_) => ({ data: { hello: 'world' } } as MessageEvent)),
+      map((_) => ({ data: data } as MessageEvent)),
     );
   }
 }
